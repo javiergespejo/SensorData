@@ -9,8 +9,13 @@ namespace SensorDataChallenge.Mappings
         public AutoMapping()
         {
             //CreateMap<Entity, EntityDTO>().ReverseMap();
+
+            // Client
             CreateMap<Client, ClientDTO>().ReverseMap();
+
+            // User
             CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();
+            CreateMap<ApplicationUser, ApplicationUserLoginDTO>().ReverseMap();
         }
     }
 }
