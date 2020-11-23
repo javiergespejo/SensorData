@@ -1,0 +1,44 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SensorDataChallenge.Models
+{
+    public class Client: BaseEntity
+    {
+        public int Id { get; set; }
+        [Required]
+        public string BusinessName { get; set; }
+        [Required]
+        public int RucNum { get; set; }
+        [Required]
+        public string Address { get; set; }
+        [Required]
+        public string Country { get; set; }
+        [Required]
+        public string City { get; set; }
+        public int PostalCode { get; set; }
+        public enum Zone
+        {
+            Norte,
+            Centro,
+            Sur
+        }
+        public string Phone { get; set; }
+        public string Fax { get; set; }
+        [Required]
+        public string Email { get; set; }
+        public string Web { get; set; }
+        public enum UruguayTransit
+        {
+            Si,
+            No,
+            Opcional
+        }
+        public enum UruguayLooseCargoTransit
+        {
+            Si,
+            No,
+            Opcional
+        }
+        public bool IsActive { get; set; }
+    }
+}
