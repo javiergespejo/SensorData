@@ -13,6 +13,7 @@ namespace SensorDataChallenge.Models
         [Required]
         public string UserName { get; set; }
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
         public Client Client { get; set; }
         public enum PermissionEnum

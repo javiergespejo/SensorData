@@ -15,6 +15,7 @@ namespace SensorDataChallenge.Models
         public string Country { get; set; }
         [Required]
         public string City { get; set; }
+        [DataType(DataType.PostalCode)]
         public int PostalCode { get; set; }
         public enum Zone
         {
@@ -22,9 +23,12 @@ namespace SensorDataChallenge.Models
             Centro,
             Sur
         }
+        [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
         public string Fax { get; set; }
         [Required]
+        [EmailAddress]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public string Web { get; set; }
         public enum UruguayTransit
