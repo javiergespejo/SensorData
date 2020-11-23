@@ -11,6 +11,7 @@ namespace SensorDataChallenge.Repositories
         // Add Repositories
         private readonly ClientRepository _clientRepository;
         private readonly ApplicationUserRepository _applicationUserRepository;
+        private readonly AccountRepository _accountRepository;
 
 
         public UnitOfWork(SensorDataDbContext context)
@@ -20,7 +21,8 @@ namespace SensorDataChallenge.Repositories
 
         // Add Interfaces
         public IClientRepository ClientRepository => _clientRepository ?? new ClientRepository(_context);
-        public IApplicationUserRepository ApplicationUserRepository => _applicationUserRepository ?? new ApplicationUserRepository(_context); 
+        public IApplicationUserRepository ApplicationUserRepository => _applicationUserRepository ?? new ApplicationUserRepository(_context);
+        public IAccountRepository AccountRepository => _accountRepository ?? new AccountRepository(_context);
 
         public async void SaveChangesAsync()
         {

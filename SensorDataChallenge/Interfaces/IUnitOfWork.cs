@@ -9,5 +9,6 @@ namespace SensorDataChallenge.Interfaces
         // Add Interfaces
         IClientRepository ClientRepository { get; }
         IApplicationUserRepository ApplicationUserRepository { get; }
+        IAccountRepository AccountRepository { get; }
     }
 }
