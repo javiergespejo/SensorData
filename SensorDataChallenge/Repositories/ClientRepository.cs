@@ -1,0 +1,37 @@
+﻿using Microsoft.EntityFrameworkCore;
+using SensorDataChallenge.Data;
+using SensorDataChallenge.Interfaces;
+using SensorDataChallenge.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace SensorDataChallenge.Repositories
+{
+    public class ClientRepository: GenericRepository<Client>, IClientRepository
+    {
+        public ClientRepository(SensorDataDbContext context) : base(context)
+        {
+        }
+
+        public void SoftDelete(Client client)
+        {
+            client.IsActive = false;
+        }
+
+        public async Task<bool> ClientExist(Client client)
+        {
+            return await _entities.AnyAsync(x => x.Email == client.Email);
+        }
+
+        public override async Task<IEnumerable<Client>> GetAllAsync()
+        {
+            return await _entities.Where(c => c.IsActive == true).ToListAsync();
+        }
+
+        public override async Task<Client> GetByIdAsync(int id)
+        {
+            return await _entities.Where(c => c.IsActive == true && c.Id == id).FirstOrDefaultAsync();
+        }
+    }
+}
