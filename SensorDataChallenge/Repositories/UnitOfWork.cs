@@ -9,9 +9,9 @@ namespace SensorDataChallenge.Repositories
         private readonly SensorDataDbContext _context;
 
         // Add Repositories
-        private readonly ClientRepository _clientRepository;
-        private readonly ApplicationUserRepository _applicationUserRepository;
-        private readonly AccountRepository _accountRepository;
+        private ClientRepository _clientRepository;
+        private ApplicationUserRepository _applicationUserRepository;
+        private AccountRepository _accountRepository;
 
 
         public UnitOfWork(SensorDataDbContext context)
@@ -20,9 +20,42 @@ namespace SensorDataChallenge.Repositories
         }
 
         // Add Interfaces
-        public IClientRepository ClientRepository => _clientRepository ?? new ClientRepository(_context);
-        public IApplicationUserRepository ApplicationUserRepository => _applicationUserRepository ?? new ApplicationUserRepository(_context);
-        public IAccountRepository AccountRepository => _accountRepository ?? new AccountRepository(_context);
+        public IClientRepository ClientRepository
+        {
+            get
+            {
+                if (_clientRepository == null)
+                {
+                    _clientRepository = new ClientRepository(_context);
+                    return _clientRepository;
+                }
+                return _clientRepository;
+            }
+        }
+
+        public IApplicationUserRepository ApplicationUserRepository
+        {
+            get
+            {
+                if (_applicationUserRepository == null)
+                {
+                    _applicationUserRepository = new ApplicationUserRepository(_context);
+                }
+                return _applicationUserRepository;
+            }
+        }
+
+        public IAccountRepository AccountRepository
+        {
+            get
+            {
+                if (_accountRepository == null)
+                {
+                    _accountRepository = new AccountRepository(_context);
+                }
+                return _accountRepository;
+            }
+        }               
 
         public async void SaveChangesAsync()
         {
