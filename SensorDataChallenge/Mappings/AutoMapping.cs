@@ -16,6 +16,7 @@ namespace SensorDataChallenge.Mappings
             // User
             CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();
             CreateMap<ApplicationUser, ApplicationUserLoginDTO>().ReverseMap();
+            CreateMap<ApplicationUser, ApplicationUserPublicViewDTO>().ReverseMap();
         }
     }
 }
