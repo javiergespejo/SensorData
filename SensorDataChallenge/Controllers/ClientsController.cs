@@ -25,7 +25,7 @@ namespace SensorDataChallenge.Controllers
 
         // GET: Clients/Details/5
         public async Task<IActionResult> Details(int id)
-        {            
+        {
             var client = await _clientService.GetClientById(id);
             if (client == null)
             {
@@ -38,7 +38,7 @@ namespace SensorDataChallenge.Controllers
         // GET: Clients/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new ClientDTO());
         }
 
         // POST: Clients/Create
@@ -46,22 +46,27 @@ namespace SensorDataChallenge.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClientDTO clientDto)
         {
-            var client = _clientService.EntityDTOToEntity(clientDto);
-            var clientExist = await _clientService.ClientExist(client);
-            if (clientExist)
+            if (ModelState.IsValid)
             {
-                return Conflict($"El cliente {clientDto.BusinessName} ya existe.");
-            }
+                var client = _clientService.EntityDTOToEntity(clientDto);
+                var clientExist = await _clientService.ClientExist(client);
+                if (clientExist)
+                {
+                    return Conflict($"El cliente {clientDto.BusinessName} ya existe.");
+                }
 
-            try
-            {
-                await _clientService.AddAndSave(client);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    await _clientService.AddAndSave(client);
+                }
+                catch (DbUpdateException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this,"_ViewAll",_clientService.GetAllClients()) });
             }
-            catch (DbUpdateException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", clientDto) });
+
         }
 
         // GET: Clients/Edit/5
