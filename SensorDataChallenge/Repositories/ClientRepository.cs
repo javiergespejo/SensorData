@@ -14,8 +14,9 @@ namespace SensorDataChallenge.Repositories
         {
         }
 
-        public void SoftDelete(Client client)
+        public async Task SoftDelete(int id)
         {
+            var client = await _entities.FindAsync(id);
             client.IsActive = false;
         }
 
@@ -31,7 +32,7 @@ namespace SensorDataChallenge.Repositories
 
         public override async Task<Client> GetByIdAsync(int id)
         {
-            return await _entities.Where(c => c.IsActive == true && c.Id == id).FirstOrDefaultAsync();
+            return await _entities.AsNoTracking().Where(c => c.IsActive == true && c.Id == id).FirstOrDefaultAsync();
         }
     }
 }

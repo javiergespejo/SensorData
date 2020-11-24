@@ -9,12 +9,12 @@ namespace SensorDataChallenge.Interfaces
     {
         public Task<IEnumerable<ClientDTO>> GetAllClients();
         public Task<Client> GetClientById(int id);
-        public ClientDTO EntityDTOToEntity(Client client);
-        public Client EntityToEntityDTO(ClientDTO clientDto);
+        public Client EntityDTOToEntity(ClientDTO clientDto);
+        public ClientDTO EntityToEntityDTO(Client client);
         public Task<bool> ClientExist(Client client);
-        public void AddAndSave(Client client);
-        public void UpdateAndSave(Client client);
-        public void SoftDeleteAndSave(Client client);
+        public Task AddAndSave(Client client);
+        public Task UpdateAndSave(Client client);
+        public Task SoftDeleteAndSave(int id);
 
     }
 }

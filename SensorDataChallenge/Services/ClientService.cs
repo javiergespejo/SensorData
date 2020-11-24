@@ -31,13 +31,13 @@ namespace SensorDataChallenge.Services
             return client;
         }
 
-        public Client EntityToEntityDTO(ClientDTO clientDto)
+        public Client EntityDTOToEntity(ClientDTO clientDto)
         {
             var client = _mapper.Map<Client>(clientDto);
             return client;
         }
 
-        public ClientDTO EntityDTOToEntity(Client client)
+        public ClientDTO EntityToEntityDTO(Client client)
         {
             var clientDto = _mapper.Map<ClientDTO>(client);
             return clientDto;
@@ -49,22 +49,23 @@ namespace SensorDataChallenge.Services
             return clientExist;
         }
 
-        public void AddAndSave(Client client)
+        public async Task AddAndSave(Client client)
         {
+            client.IsActive = true;
             _unitOfWork.ClientRepository.Add(client);
-            _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
-        public void UpdateAndSave(Client client)
+        public async Task UpdateAndSave(Client client)
         {
             _unitOfWork.ClientRepository.Update(client);
-            _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
-        public void SoftDeleteAndSave(Client client)
+        public async Task SoftDeleteAndSave(int id)
         {
-            _unitOfWork.ClientRepository.SoftDelete(client);
-            _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.ClientRepository.SoftDelete(id);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

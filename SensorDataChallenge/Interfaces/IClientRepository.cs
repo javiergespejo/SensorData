@@ -5,7 +5,7 @@ namespace SensorDataChallenge.Interfaces
 {
     public interface IClientRepository: IGenericRepository<Client>
     {
-        public void SoftDelete(Client client);
+        public Task SoftDelete(int id);
         public Task<bool> ClientExist(Client client);
     }
 }
