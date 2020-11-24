@@ -18,29 +18,31 @@ namespace SensorDataChallenge.Controllers
         public async Task<IActionResult> Index()
         {
             var usersDto = await _applicationUserService.GetAllUsers();
-            return Ok(usersDto);
+            return View(usersDto);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> UserId(int id)
+        [Route("DetailUser")]
+        public async Task<IActionResult> Details(int id)
         {
             var user = await _applicationUserService.GetUserById(id);
-            var userDto = _applicationUserService.EntityDTOToEntity(user);
-            if (userDto == null)
+            if (user == null)
             {
                 return NotFound();
             }
-            return Ok(userDto);
+            var userDto = _applicationUserService.EntityToEntityPublicViewDTO(user);
+            return View(userDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostUser(ApplicationUserDTO userDto)
+        [Route("CreateUser")]
+        public async Task<IActionResult> Create(ApplicationUserDTO userDto)
         {
-            var user = _applicationUserService.EntityToEntityDTO(userDto);
+            var user = _applicationUserService.EntityDTOToEntity(userDto);
             var userExist = await _applicationUserService.UserExist(user);
             if (userExist)
             {
-                return BadRequest();
+                return Conflict($"El usuario {userDto.UserName} ya existe.");
             }
 
             try
@@ -54,11 +56,16 @@ namespace SensorDataChallenge.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> PutUser(int id, ApplicationUserDTO userDto)
+        [HttpPut("{id}")]
+        [Route("EditUser")]
+        public async Task<IActionResult> Edit(int id, ApplicationUserDTO userDto)
         {
             var currentUser = await _applicationUserService.GetUserById(id);
-            var userUpdate = _applicationUserService.EntityToEntityDTO(userDto);
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            var userUpdate = _applicationUserService.EntityDTOToEntity(userDto);
             userUpdate.Id = id;
 
             var usertExist = await _applicationUserService.UserExist(currentUser);
@@ -70,7 +77,7 @@ namespace SensorDataChallenge.Controllers
             try
             {
                 _applicationUserService.UpdateAndSave(userUpdate);
-                return Ok();
+                return View();
             }
             catch (Exception ex)
             {
@@ -80,7 +87,8 @@ namespace SensorDataChallenge.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        [Route("DeleteUser")]
+        public async Task<IActionResult> Delete(int id)
         {
             var user = await _applicationUserService.GetUserById(id);
             if (user == null)

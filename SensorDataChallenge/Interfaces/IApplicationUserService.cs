@@ -7,9 +7,10 @@ namespace SensorDataChallenge.Interfaces
 {
     public interface IApplicationUserService
     {
-        public Task<IEnumerable<ApplicationUserDTO>> GetAllUsers();
-        public ApplicationUser EntityToEntityDTO(ApplicationUserDTO userDto);
-        public ApplicationUserDTO EntityDTOToEntity(ApplicationUser user);
+        public Task<IEnumerable<ApplicationUserPublicViewDTO>> GetAllUsers();
+        public ApplicationUser EntityDTOToEntity(ApplicationUserDTO userDto);
+        public ApplicationUserDTO EntityToEntityDTO(ApplicationUser user);
+        public ApplicationUserPublicViewDTO EntityToEntityPublicViewDTO(ApplicationUser user);
         public Task<ApplicationUser> GetUserById(int id);
         public Task<bool> UserExist(ApplicationUser user);
         public void AddAndSave(ApplicationUser user);

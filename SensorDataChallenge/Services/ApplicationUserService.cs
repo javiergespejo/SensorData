@@ -17,22 +17,28 @@ namespace SensorDataChallenge.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<ApplicationUserDTO>> GetAllUsers()
+        public async Task<IEnumerable<ApplicationUserPublicViewDTO>> GetAllUsers()
         {
             var users = await _unitOfWork.ApplicationUserRepository.GetAllAsync();
-            var usersDto = _mapper.Map<List<ApplicationUserDTO>>(users);
+            var usersDto = _mapper.Map<List<ApplicationUserPublicViewDTO>>(users);
             return usersDto;
         }
 
-        public ApplicationUser EntityToEntityDTO(ApplicationUserDTO userDto)
+        public ApplicationUser EntityDTOToEntity(ApplicationUserDTO userDto)
         {
             var user = _mapper.Map<ApplicationUser>(userDto);
             return user;
         }
 
-        public ApplicationUserDTO EntityDTOToEntity(ApplicationUser user)
+        public ApplicationUserDTO EntityToEntityDTO(ApplicationUser user)
         {
             var userDto = _mapper.Map<ApplicationUserDTO>(user);
+            return userDto;
+        }
+
+        public ApplicationUserPublicViewDTO EntityToEntityPublicViewDTO(ApplicationUser user)
+        {
+            var userDto = _mapper.Map<ApplicationUserPublicViewDTO>(user);
             return userDto;
         }
 
