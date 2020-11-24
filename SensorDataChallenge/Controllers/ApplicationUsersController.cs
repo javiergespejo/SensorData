@@ -56,7 +56,6 @@ namespace SensorDataChallenge.Controllers
             {
                 await _applicationUserService.AddAndSave(user);
                 return RedirectToAction(nameof(Index));
-                //return CreatedAtAction("PostUser", userDto);
             }
             catch (DbUpdateException ex)
             {
