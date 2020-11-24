@@ -3,6 +3,7 @@ using SensorDataChallenge.Data;
 using SensorDataChallenge.Interfaces;
 using SensorDataChallenge.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SensorDataChallenge.Repositories
@@ -34,6 +35,8 @@ namespace SensorDataChallenge.Repositories
         }
         public virtual void Update(TEntity entity)
         {
+            //_context.Entry(entity).State = EntityState.Detached;
+            //_entities.Update(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
 
