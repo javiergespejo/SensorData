@@ -42,6 +42,18 @@ namespace SensorDataChallenge.Services
             return userDto;
         }
 
+        public ApplicationUser EntityEditDTOToEntity(ApplicationUserEditDTO userDto)
+        {
+            var user = _mapper.Map<ApplicationUser>(userDto);
+            return user;
+        }
+
+        public ApplicationUserEditDTO EntityToEntityEditDTO(ApplicationUser user)
+        {
+            var userDto = _mapper.Map<ApplicationUserEditDTO>(user);
+            return userDto;
+        }
+
         public async Task<ApplicationUser> GetUserById(int id)
         {
             var user = await _unitOfWork.ApplicationUserRepository.GetByIdAsync(id);
@@ -54,22 +66,22 @@ namespace SensorDataChallenge.Services
             return userExist;
         }
 
-        public void AddAndSave(ApplicationUser user)
+        public async Task AddAndSave(ApplicationUser user)
         {
             _unitOfWork.ApplicationUserRepository.Add(user);
-            _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
-        public void UpdateAndSave(ApplicationUser user)
+        public async Task UpdateAndSave(ApplicationUser user)
         {
             _unitOfWork.ApplicationUserRepository.Update(user);
-            _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
-        public void DeleteAndSave(int id)
+        public async Task DeleteAndSave(int id)
         {
             _unitOfWork.ApplicationUserRepository.DeleteAsync(id);
-            _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

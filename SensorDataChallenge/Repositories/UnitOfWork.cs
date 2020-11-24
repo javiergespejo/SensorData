@@ -1,5 +1,6 @@
 ﻿using SensorDataChallenge.Data;
 using SensorDataChallenge.Interfaces;
+using System.Threading.Tasks;
 
 namespace SensorDataChallenge.Repositories
 {
@@ -57,7 +58,7 @@ namespace SensorDataChallenge.Repositories
             }
         }               
 
-        public async void SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }

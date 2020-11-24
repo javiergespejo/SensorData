@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SensorDataChallenge.DTOs;
 using SensorDataChallenge.Interfaces;
 using System;
@@ -14,15 +15,14 @@ namespace SensorDataChallenge.Controllers
             _applicationUserService = applicationUserService;
         }
 
-        [HttpGet]
+        // GET: ApplicationUsers
         public async Task<IActionResult> Index()
         {
             var usersDto = await _applicationUserService.GetAllUsers();
             return View(usersDto);
         }
 
-        [HttpGet("{id}")]
-        [Route("DetailUser")]
+        // GET: ApplicationUsers/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var user = await _applicationUserService.GetUserById(id);
@@ -34,8 +34,15 @@ namespace SensorDataChallenge.Controllers
             return View(userDto);
         }
 
+        // GET: ApplicationUsers/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: ApplicationUsers/Create
         [HttpPost]
-        [Route("CreateUser")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ApplicationUserDTO userDto)
         {
             var user = _applicationUserService.EntityDTOToEntity(userDto);
@@ -47,48 +54,69 @@ namespace SensorDataChallenge.Controllers
 
             try
             {
-                _applicationUserService.AddAndSave(user);
-                return CreatedAtAction("PostUser", userDto);
+                await _applicationUserService.AddAndSave(user);
+                return RedirectToAction(nameof(Index));
+                //return CreatedAtAction("PostUser", userDto);
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
                 return BadRequest(ex);
             }
         }
 
-        [HttpPut("{id}")]
-        [Route("EditUser")]
-        public async Task<IActionResult> Edit(int id, ApplicationUserDTO userDto)
+        // GET: ApplicationUsers/Edit/5
+        public async Task<IActionResult> Edit(int id)
         {
-            var currentUser = await _applicationUserService.GetUserById(id);
-            if (currentUser == null)
-            {
-                return NotFound();
-            }
-            var userUpdate = _applicationUserService.EntityDTOToEntity(userDto);
-            userUpdate.Id = id;
-
-            var usertExist = await _applicationUserService.UserExist(currentUser);
-            if (!usertExist)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                _applicationUserService.UpdateAndSave(userUpdate);
-                return View();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-
+            var user = await _applicationUserService.GetUserById(id);
+            var userDto = _applicationUserService.EntityToEntityEditDTO(user);
+            return View(userDto);
         }
 
-        [HttpDelete("{id}")]
-        [Route("DeleteUser")]
+        // POST: ApplicationUsers/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, ApplicationUserEditDTO userDto)
+        {
+            if (id != userDto.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var currentUser = await _applicationUserService.GetUserById(id);
+                    var user = _applicationUserService.EntityEditDTOToEntity(userDto);
+                    await _applicationUserService.UpdateAndSave(user);
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+
+                    return BadRequest(ex.Message);
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        //GET: ApplicationUsers/Delete/5
         public async Task<IActionResult> Delete(int id)
+        {
+            var user = await _applicationUserService.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userDto = _applicationUserService.EntityToEntityPublicViewDTO(user);
+
+            return View(userDto);
+        }
+
+        // POST: ApplicationUsers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var user = await _applicationUserService.GetUserById(id);
             if (user == null)
@@ -98,8 +126,8 @@ namespace SensorDataChallenge.Controllers
 
             try
             {
-                _applicationUserService.DeleteAndSave(id);
-                return Ok();
+                await _applicationUserService.DeleteAndSave(id);
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace SensorDataChallenge.Interfaces
 {
     public interface IUnitOfWork: IDisposable
     {
-        public void SaveChangesAsync();
+        public Task SaveChangesAsync();
 
         // Add Interfaces
         IClientRepository ClientRepository { get; }
