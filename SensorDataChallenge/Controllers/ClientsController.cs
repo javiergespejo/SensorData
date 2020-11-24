@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SensorDataChallenge.DTOs;
 using SensorDataChallenge.Interfaces;
 using System;
@@ -16,76 +17,91 @@ namespace SensorDataChallenge.Controllers
         }
 
         // GET: Clients
-        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var clientsDto = await _clientService.GetAllClients();
-            return Ok(clientsDto);
+            return View(clientsDto);
         }
 
-        // GET: Clients/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Client(int id)
+        // GET: Clients/Details/5
+        public async Task<IActionResult> Details(int id)
         {            
             var client = await _clientService.GetClientById(id);
-            var clientDto = _clientService.EntityDTOToEntity(client);
-            if (clientDto == null)
+            if (client == null)
             {
                 return NotFound();
             }
-            return Ok(clientDto);
+            var clientDto = _clientService.EntityToEntityDTO(client);
+            return View(clientDto);
         }
 
-        // POST: Clients
-        [HttpPost]
-        public async Task<IActionResult> PostClient(ClientDTO clientDto)
+        // GET: Clients/Create
+        public IActionResult Create()
         {
-            var client = _clientService.EntityToEntityDTO(clientDto);
+            return View();
+        }
+
+        // POST: Clients/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ClientDTO clientDto)
+        {
+            var client = _clientService.EntityDTOToEntity(clientDto);
             var clientExist = await _clientService.ClientExist(client);
             if (clientExist)
             {
-                return BadRequest();
+                return Conflict($"El cliente {clientDto.BusinessName} ya existe.");
             }
 
             try
             {
-                _clientService.AddAndSave(client);
-                return CreatedAtAction("PostClient", clientDto);
+                await _clientService.AddAndSave(client);
+                return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
-        // PUT: Clients/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutClient(int id, ClientDTO clientDto)
+        // GET: Clients/Edit/5
+        public async Task<IActionResult> Edit(int id)
         {
-            var currentClient = await _clientService.GetClientById(id);
-            var clientUpdate = _clientService.EntityToEntityDTO(clientDto);
-            clientUpdate.Id = id;
-            
-            var clientExist = await _clientService.ClientExist(currentClient);
-            if (!clientExist)
+            var client = await _clientService.GetClientById(id);
+            var clientDto = _clientService.EntityToEntityDTO(client);
+            return View(clientDto);
+        }
+
+        // PUT: Clients/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, ClientDTO clientDto)
+        {
+            if (id != clientDto.Id)
             {
                 return NotFound();
             }
 
-            try
+            if (ModelState.IsValid)
             {
-                _clientService.UpdateAndSave(clientUpdate);
-                return Ok();
+                try
+                {
+                    var currentClient = await _clientService.GetClientById(id);
+                    var client = _clientService.EntityDTOToEntity(clientDto);
+                    client.IsActive = true;
+                    await _clientService.UpdateAndSave(client);
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+
+                    return BadRequest(ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return RedirectToAction(nameof(Index));
         }
 
-        // DELETE: Clients/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClient(int id)
+        // GET: Clients/Delete/5
+        public async Task<IActionResult> Delete(int id)
         {
             var client = await _clientService.GetClientById(id);
             if (client == null)
@@ -93,14 +109,30 @@ namespace SensorDataChallenge.Controllers
                 return NotFound();
             }
 
+            var clientDto = _clientService.EntityToEntityDTO(client);
+
+            return View(clientDto);
+        }
+
+        // POST: ApplicationUsers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            //var client = await _clientService.GetClientById(id);
+            //if (client == null)
+            //{
+            //    return NotFound();
+            //}
             try
             {
-                _clientService.SoftDeleteAndSave(client);
-                return Ok();
+                await _clientService.SoftDeleteAndSave(id);
+                return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            catch (DbUpdateConcurrencyException ex)
             {
-                return BadRequest(ex);
+
+                return BadRequest(ex.Message);
             }
         }
     }
