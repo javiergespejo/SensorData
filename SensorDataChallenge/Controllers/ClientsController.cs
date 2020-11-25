@@ -4,6 +4,7 @@ using SensorDataChallenge.DTOs;
 using SensorDataChallenge.Interfaces;
 using System;
 using System.Threading.Tasks;
+using static SensorDataChallenge.Helper;
 
 namespace SensorDataChallenge.Controllers
 {
@@ -70,6 +71,7 @@ namespace SensorDataChallenge.Controllers
         }
 
         // GET: Clients/Edit/5
+        [NoDirectAccess]
         public async Task<IActionResult> Edit(int id)
         {
             var client = await _clientService.GetClientById(id);
@@ -107,33 +109,28 @@ namespace SensorDataChallenge.Controllers
         }
 
         // GET: Clients/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            var client = await _clientService.GetClientById(id);
-            if (client == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var client = await _clientService.GetClientById(id);
+        //    if (client == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var clientDto = _clientService.EntityToEntityDTO(client);
+        //    var clientDto = _clientService.EntityToEntityDTO(client);
 
-            return View(clientDto);
-        }
+        //    return View(clientDto);
+        //}
 
         // POST: ApplicationUsers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //var client = await _clientService.GetClientById(id);
-            //if (client == null)
-            //{
-            //    return NotFound();
-            //}
             try
             {
                 await _clientService.SoftDeleteAndSave(id);
-                return RedirectToAction(nameof(Index));
+                return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", _clientService.GetAllClients()) });
             }
             catch (DbUpdateConcurrencyException ex)
             {
