@@ -79,7 +79,7 @@ namespace SensorDataChallenge.Controllers
             return View(clientDto);
         }
 
-        // PUT: Clients/5
+        // POST: Clients/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ClientDTO clientDto)
@@ -107,20 +107,6 @@ namespace SensorDataChallenge.Controllers
             }
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", clientDto) });
         }
-
-        // GET: Clients/Delete/5
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    var client = await _clientService.GetClientById(id);
-        //    if (client == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var clientDto = _clientService.EntityToEntityDTO(client);
-
-        //    return View(clientDto);
-        //}
 
         // POST: ApplicationUsers/Delete/5
         [HttpPost, ActionName("Delete")]
