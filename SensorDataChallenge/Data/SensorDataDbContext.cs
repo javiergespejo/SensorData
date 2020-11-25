@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SensorDataChallenge.Models;
 
 namespace SensorDataChallenge.Data
 {
-    public class SensorDataDbContext : DbContext
+    public class SensorDataDbContext : IdentityDbContext
     {
         public SensorDataDbContext()
         {
@@ -20,6 +21,7 @@ namespace SensorDataChallenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Permission>()
                 .HasData(
                     new Permission
