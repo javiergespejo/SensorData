@@ -37,7 +37,7 @@ namespace SensorDataChallenge.Controllers
         // GET: ApplicationUsers/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new ApplicationUserDTO());
         }
 
         // POST: ApplicationUsers/Create
@@ -45,22 +45,26 @@ namespace SensorDataChallenge.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ApplicationUserDTO userDto)
         {
-            var user = _applicationUserService.EntityDTOToEntity(userDto);
-            var userExist = await _applicationUserService.UserExist(user);
-            if (userExist)
+            if (ModelState.IsValid)
             {
-                return Conflict($"El usuario {userDto.UserName} ya existe.");
-            }
+                var user = _applicationUserService.EntityDTOToEntity(userDto);
+                var userExist = await _applicationUserService.UserExist(user);
+                if (userExist)
+                {
+                    return Conflict($"El usuario {userDto.UserName} ya existe.");
+                }
 
-            try
-            {
-                await _applicationUserService.AddAndSave(user);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    await _applicationUserService.AddAndSave(user);
+                }
+                catch (DbUpdateException ex)
+                {
+                    return BadRequest(ex);
+                }                                                                          /*CAMBIAR EL REDIRECT*/
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Index", _applicationUserService.GetAllUsers()) });
             }
-            catch (DbUpdateException ex)
-            {
-                return BadRequest(ex);
-            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", userDto) });
         }
 
         // GET: ApplicationUsers/Edit/5
@@ -93,23 +97,10 @@ namespace SensorDataChallenge.Controllers
                 {
 
                     return BadRequest(ex.Message);
-                }
+                }                                                                          /*CAMBIAR EL REDIRECT*/
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Index", _applicationUserService.GetAllUsers()) });
             }
-            return RedirectToAction(nameof(Index));
-        }
-
-        //GET: ApplicationUsers/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            var user = await _applicationUserService.GetUserById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var userDto = _applicationUserService.EntityToEntityPublicViewDTO(user);
-
-            return View(userDto);
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", userDto) });
         }
 
         // POST: ApplicationUsers/Delete/5
@@ -125,13 +116,12 @@ namespace SensorDataChallenge.Controllers
 
             try
             {
-                await _applicationUserService.DeleteAndSave(id);
-                return RedirectToAction(nameof(Index));
+                await _applicationUserService.DeleteAndSave(id);              /*CAMBIAR EL REDIRECT*/
+                return Json(new { html = Helper.RenderRazorViewToString(this, "Index", _applicationUserService.GetAllUsers()) });
             }
             catch (Exception ex)
             {
-
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
     }
