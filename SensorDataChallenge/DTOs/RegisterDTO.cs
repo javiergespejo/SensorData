@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace SensorDataChallenge.DTOs
         //[Required]
         //public string Description { get; set; }
         [Required]
+        [Remote(action: "IsUserNameInUse", controller: "Account")]
         public string UserName { get; set; }
         [Required]
         [DataType(DataType.Password)]

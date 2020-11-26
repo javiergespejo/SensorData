@@ -100,5 +100,21 @@ namespace SensorDataChallenge.Controllers
 
             return View(model);
         }
+
+        [AcceptVerbs("Get", "Post")]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsUserNameInUse(string username)
+        {
+            var user = await userManager.FindByEmailAsync(username);
+
+            if (user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Username {username} is already in use.");
+            }
+        }
     }
 }
