@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SensorDataChallenge.Interfaces
 {
-    public interface IGenericRepository<TEntity> where TEntity : BaseEntity
+    public interface IGenericRepository<TEntity> where TEntity : class
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity> GetByIdAsync(int id);

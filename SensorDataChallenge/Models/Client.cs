@@ -2,7 +2,7 @@
 
 namespace SensorDataChallenge.Models
 {
-    public class Client: BaseEntity
+    public class Client
     {
         public int Id { get; set; }
         [Required]

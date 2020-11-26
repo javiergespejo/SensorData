@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SensorDataChallenge.Models
 {
-    public class Permission : BaseEntity
+    public class Permission
     {
         public int Id { get; set; }
         [Required]

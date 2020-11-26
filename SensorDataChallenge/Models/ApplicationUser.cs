@@ -1,10 +1,11 @@
-﻿using SensorDataChallenge.Enums;
+﻿using Microsoft.AspNetCore.Identity;
+using SensorDataChallenge.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SensorDataChallenge.Models
 {
-    public class ApplicationUser : BaseEntity
+    public class ApplicationUser
     {
         public int Id { get; set; }
         [Required]
