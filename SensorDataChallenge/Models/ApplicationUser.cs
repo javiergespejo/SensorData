@@ -11,7 +11,7 @@ namespace SensorDataChallenge.Models
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
         public Client Client { get; set; }
         public List<Permission> Permission { get; set; }
     }

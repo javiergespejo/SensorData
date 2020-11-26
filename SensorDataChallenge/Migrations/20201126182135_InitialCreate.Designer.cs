@@ -10,8 +10,8 @@ using SensorDataChallenge.Data;
 namespace SensorDataChallenge.Migrations
 {
     [DbContext(typeof(SensorDataDbContext))]
-    [Migration("20201126174917_ApplicationUserWithIdentity")]
-    partial class ApplicationUserWithIdentity
+    [Migration("20201126182135_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

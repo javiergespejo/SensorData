@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SensorDataChallenge.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,5 +25,8 @@ namespace SensorDataChallenge.DTOs
         [Compare("Password", ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
         public int ClientId { get; set; }
+        public List<int> PermissionsId { get; set; }
+        public List<Permission> Permission { get; set; }
+
     }
 }

@@ -9,25 +9,34 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using SensorDataChallenge.Data;
+using System.Linq;
 
 namespace SensorDataChallenge.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IAccountRepository _accountRepository;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
 
         public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IAccountRepository accountRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            _accountRepository = accountRepository;
         }
 
         // GET: Account/Register
         [AllowAnonymous]
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
+            var permissions = await _accountRepository.GetPermissions();
+            ViewBag.Permissions = new MultiSelectList(permissions, "Id", "Description");
             return View();
         }
 
@@ -37,6 +46,9 @@ namespace SensorDataChallenge.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterDTO model)
         {
+            //model.Permission = _context.Permission.Where(x => model.PermissionsId.Contains(x.Id)).ToList();
+            model.Permission = await _accountRepository.Permissions(model);
+
             if (ModelState.IsValid)
             {
                 // Copy data from RegisterViewModel to IdentityUser
@@ -45,7 +57,8 @@ namespace SensorDataChallenge.Controllers
                     UserName = model.UserName,
                     Description = model.Description,
                     Name = model.Name,
-                    ClientId = model.ClientId
+                    ClientId = model.ClientId,
+                    Permission = model.Permission
                 };
 
                 // Store user data in AspNetUsers database table
