@@ -9,6 +9,14 @@
     <title>@ViewData["Title"] - SensorDataChallenge</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <!-- ================== BEGIN core-css ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="~/css/default/app.min.css" rel="stylesheet" />
+
+    @RenderSection("Styles", required: false)
+    <!-- ================== END core-css ================== -->
+
 </head>
 <body>
     <header>
@@ -95,6 +103,12 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/notify.min.js" asp-append-version="true"></script>
+
+    <!-- ================== BEGIN core-js ================== -->
+    <script src="~/js/app.min.js"></script>
+    <script src="~/js/theme/default.min.js"></script>
+    <!-- ================== END core-js ================== -->
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
