@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using SensorDataChallenge.DTOs;
 using SensorDataChallenge.Interfaces;
-using System;
 using System.Threading.Tasks;
 using static SensorDataChallenge.Helper;
 

@@ -7,5 +7,7 @@ namespace SensorDataChallenge.Interfaces
     {
         public Task SoftDelete(int id);
         public Task<bool> ClientExist(Client client);
+        public Task<Client> GetClientByIdAsync(int id);
+
     }
 }

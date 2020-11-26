@@ -11,9 +11,19 @@
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UserName"></label>
+                <label>Username</label>
                 <input asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password"></label>
@@ -24,6 +34,13 @@
                 <label asp-for="ConfirmPassword"></label>
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientId"></label>
+                <input asp-for="ClientId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <select multiple asp-for="PermissionsId" id="permission" asp-items="ViewBag.Permissions" placeholder="select roles" class="form-control w-50 dropdown"></select>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>

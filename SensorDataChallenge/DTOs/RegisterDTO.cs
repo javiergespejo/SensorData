@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SensorDataChallenge.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,10 +10,10 @@ namespace SensorDataChallenge.DTOs
 {
     public class RegisterDTO
     {
-        //[Required]
-        //public string Name { get; set; }
-        //[Required]
-        //public string Description { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string Description { get; set; }
         [Required]
         [Remote(action: "IsUserNameInUse", controller: "Account")]
         public string UserName { get; set; }
@@ -23,5 +24,9 @@ namespace SensorDataChallenge.DTOs
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        public int ClientId { get; set; }
+        public List<int> PermissionsId { get; set; }
+        public List<Permission> Permission { get; set; }
+
     }
 }

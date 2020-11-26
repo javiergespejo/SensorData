@@ -27,7 +27,7 @@ namespace SensorDataChallenge.Services
 
         public async Task<Client> GetClientById(int id)
         {
-            var client = await _unitOfWork.ClientRepository.GetByIdAsync(id);
+            var client = await _unitOfWork.ClientRepository.GetClientByIdAsync(id);
             return client;
         }
 

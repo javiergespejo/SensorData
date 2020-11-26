@@ -18,7 +18,7 @@ namespace SensorDataChallenge.Repositories
             return await _entities.AnyAsync(x => x.UserName == user.UserName);
         }
 
-        public override async Task<ApplicationUser> GetByIdAsync(int id)
+        public override async Task<ApplicationUser> GetByIdAsync(string id)
         {
             var user = await _entities.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
             return user;
