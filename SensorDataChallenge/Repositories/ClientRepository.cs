@@ -30,7 +30,7 @@ namespace SensorDataChallenge.Repositories
             return await _entities.Where(c => c.IsActive == true).ToListAsync();
         }
 
-        public override async Task<Client> GetByIdAsync(int id)
+        public async Task<Client> GetClientByIdAsync(int id)
         {
             return await _entities.AsNoTracking().Where(c => c.IsActive == true && c.Id == id).FirstOrDefaultAsync();
         }

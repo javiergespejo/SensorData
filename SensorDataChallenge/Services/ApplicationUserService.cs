@@ -54,7 +54,7 @@ namespace SensorDataChallenge.Services
             return userDto;
         }
 
-        public async Task<ApplicationUser> GetUserById(int id)
+        public async Task<ApplicationUser> GetUserById(string id)
         {
             var user = await _unitOfWork.ApplicationUserRepository.GetByIdAsync(id);
             return user;
@@ -78,7 +78,7 @@ namespace SensorDataChallenge.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task DeleteAndSave(int id)
+        public async Task DeleteAndSave(string id)
         {
             _unitOfWork.ApplicationUserRepository.DeleteAsync(id);
             await _unitOfWork.SaveChangesAsync();

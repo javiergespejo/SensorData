@@ -4,7 +4,7 @@ using SensorDataChallenge.Models;
 
 namespace SensorDataChallenge.Data
 {
-    public class SensorDataDbContext : IdentityDbContext
+    public class SensorDataDbContext : IdentityDbContext<ApplicationUser>
     {
         public SensorDataDbContext()
         {

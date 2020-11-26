@@ -9,10 +9,10 @@ namespace SensorDataChallenge.DTOs
 {
     public class RegisterDTO
     {
-        //[Required]
-        //public string Name { get; set; }
-        //[Required]
-        //public string Description { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string Description { get; set; }
         [Required]
         [Remote(action: "IsUserNameInUse", controller: "Account")]
         public string UserName { get; set; }
@@ -23,5 +23,6 @@ namespace SensorDataChallenge.DTOs
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        public int ClientId { get; set; }
     }
 }

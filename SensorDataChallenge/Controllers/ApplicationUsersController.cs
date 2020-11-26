@@ -23,7 +23,7 @@ namespace SensorDataChallenge.Controllers
         }
 
         // GET: ApplicationUsers/Details/5
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(string id)
         {
             var user = await _applicationUserService.GetUserById(id);
             if (user == null)
@@ -68,7 +68,7 @@ namespace SensorDataChallenge.Controllers
         }
 
         // GET: ApplicationUsers/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
             var user = await _applicationUserService.GetUserById(id);
             var userDto = _applicationUserService.EntityToEntityEditDTO(user);
@@ -78,7 +78,7 @@ namespace SensorDataChallenge.Controllers
         // POST: ApplicationUsers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ApplicationUserEditDTO userDto)
+        public async Task<IActionResult> Edit(string id, ApplicationUserEditDTO userDto)
         {
             if (id != userDto.Id)
             {
@@ -106,7 +106,7 @@ namespace SensorDataChallenge.Controllers
         // POST: ApplicationUsers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _applicationUserService.GetUserById(id);
             if (user == null)

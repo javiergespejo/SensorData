@@ -7,9 +7,9 @@ namespace SensorDataChallenge.Interfaces
     public interface IGenericRepository<TEntity> where TEntity : class
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<TEntity> GetByIdAsync(int id);
+        Task<TEntity> GetByIdAsync(string id);
         void Add(TEntity entity);
         void Update(TEntity entity);
-        void DeleteAsync(int id);
+        void DeleteAsync(string id);
     }
 }

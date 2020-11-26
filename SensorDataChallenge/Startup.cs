@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SensorDataChallenge.Data;
 using SensorDataChallenge.Interfaces;
+using SensorDataChallenge.Models;
 using SensorDataChallenge.Repositories;
 using SensorDataChallenge.Services;
 
@@ -57,7 +58,7 @@ namespace SensorDataChallenge
             services.AddTransient<IAccountRepository, AccountRepository>();
 
             // IdentityUser
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<SensorDataDbContext>();
             services.Configure<IdentityOptions>(options =>
             {

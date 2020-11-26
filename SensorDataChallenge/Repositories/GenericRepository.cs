@@ -24,7 +24,7 @@ namespace SensorDataChallenge.Repositories
             return await _entities.ToListAsync();
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(string id)
         {
             return await _entities.FindAsync(id);
         }
@@ -40,7 +40,7 @@ namespace SensorDataChallenge.Repositories
             _context.Entry(entity).State = EntityState.Modified;
         }
 
-        public virtual async void DeleteAsync(int id)
+        public virtual async void DeleteAsync(string id)
         {
             var entity = await _entities.FindAsync(id);
             _entities.Remove(entity);
