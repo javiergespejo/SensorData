@@ -21,6 +21,14 @@ showInPopup = (url, title) => {
             $("#form-modal .modal-body").html(res);
             $("#form-modal .modal-title").html(title);
             $("#form-modal").modal('show');
+        },
+        error: function (err) {
+            if (err.status == 403) {
+                alert("You don't have permission to access this page or perform this action.");
+            }
+            else {
+                console.log(err);
+            }
         }
     })
 }
@@ -39,7 +47,7 @@ jQueryAjaxPost = form => {
                     $('#form-modal .modal-body').html('');
                     $('#form-modal .modal-title').html('');
                     $('#form-modal').modal('hide');
-                    $.notify('Submitted successfully', { globalPosition: 'top center', className : 'success' });
+                    //$.notify('Submitted successfully', { globalPosition: 'top center', className: 'success' });
                 }
                 else
                     $('#form-modal .modal-body').html(res.html);
@@ -66,10 +74,15 @@ jQueryAjaxDelete = form => {
                 processData: false,
                 success: function (res) {
                     $('#view-all').html(res.html);
-                    $.notify('Deleted successfully', { globalPosition: 'top center', className : 'success' });
+                    //$.notify('Deleted successfully', { globalPosition: 'top center', className: 'success' });
                 },
                 error: function (err) {
-                    console.log(err)
+                    if (err.status == 403) {
+                        alert("You don't have permission to access this page or perform this action.");
+                    }
+                    else {
+                        console.log(err);
+                    }
                 }
             })
         } catch (ex) {

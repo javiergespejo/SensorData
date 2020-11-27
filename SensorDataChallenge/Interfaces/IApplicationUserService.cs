@@ -11,12 +11,15 @@ namespace SensorDataChallenge.Interfaces
         public ApplicationUser EntityDTOToEntity(ApplicationUserDTO userDto);
         public ApplicationUserDTO EntityToEntityDTO(ApplicationUser user);
         public ApplicationUserPublicViewDTO EntityToEntityPublicViewDTO(ApplicationUser user);
-        public ApplicationUser EntityEditDTOToEntity(ApplicationUserEditDTO userDto);
-        public ApplicationUserEditDTO EntityToEntityEditDTO(ApplicationUser user);
+        public ApplicationUser RegisterDTOToEntity(RegisterDTO registerDto);
+        public RegisterDTO EntityToRegisterDTO(ApplicationUser user);
         public Task<ApplicationUser> GetUserById(string id);
         public Task<bool> UserExist(ApplicationUser user);
         public Task AddAndSave(ApplicationUser user);
         public Task UpdateAndSave(ApplicationUser user);
         public Task DeleteAndSave(string id);
+        public Task<List<Permission>> GetPermissions();
+        public Task<List<Permission>> Permissions(RegisterDTO registerDto);
+        public Task UpdateClient(string id, RegisterDTO registerDto);
     }
 }

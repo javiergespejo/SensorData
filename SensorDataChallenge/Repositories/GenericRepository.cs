@@ -36,8 +36,8 @@ namespace SensorDataChallenge.Repositories
         public virtual void Update(TEntity entity)
         {
             //_context.Entry(entity).State = EntityState.Detached;
-            //_entities.Update(entity);
-            _context.Entry(entity).State = EntityState.Modified;
+            _entities.Update(entity);
+            //_context.Entry(entity).State = EntityState.Modified;
         }
 
         public virtual async void DeleteAsync(string id)

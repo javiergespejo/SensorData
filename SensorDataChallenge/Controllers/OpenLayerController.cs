@@ -4,7 +4,7 @@ using SensorDataChallenge.Filters;
 
 namespace SensorDataChallenge.Controllers
 {
-    [Authorize(PermissionEnum.UpdateClient)]
+    [Authorize(PermissionEnum.ViewMap)]
     public class OpenLayerController : Controller
     {
         public IActionResult Index()

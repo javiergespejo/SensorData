@@ -11,11 +11,15 @@ namespace SensorDataChallenge.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IAccountRepository _accountRepository;
+        private readonly IApplicationUserRepository _applicationUserRepository;
 
-        public ApplicationUserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ApplicationUserService(IUnitOfWork unitOfWork, IMapper mapper, IAccountRepository accountRepository, IApplicationUserRepository applicationUserRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _accountRepository = accountRepository;
+            _applicationUserRepository = applicationUserRepository;
         }
         public async Task<IEnumerable<ApplicationUserPublicViewDTO>> GetAllUsers()
         {
@@ -42,16 +46,16 @@ namespace SensorDataChallenge.Services
             return userDto;
         }
 
-        public ApplicationUser EntityEditDTOToEntity(ApplicationUserEditDTO userDto)
+        public ApplicationUser RegisterDTOToEntity(RegisterDTO registerDto)
         {
-            var user = _mapper.Map<ApplicationUser>(userDto);
+            var user = _mapper.Map<ApplicationUser>(registerDto);
             return user;
         }
 
-        public ApplicationUserEditDTO EntityToEntityEditDTO(ApplicationUser user)
+        public RegisterDTO EntityToRegisterDTO(ApplicationUser user)
         {
-            var userDto = _mapper.Map<ApplicationUserEditDTO>(user);
-            return userDto;
+            var registerDto = _mapper.Map<RegisterDTO>(user);
+            return registerDto;
         }
 
         public async Task<ApplicationUser> GetUserById(string id)
@@ -82,6 +86,30 @@ namespace SensorDataChallenge.Services
         {
             _unitOfWork.ApplicationUserRepository.DeleteAsync(id);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<List<Permission>> Permissions(RegisterDTO registerDto)
+        {
+            var users = await _accountRepository.Permissions(registerDto);
+            return users;
+        }
+
+        public async Task<List<Permission>> GetPermissions()
+        {
+            var users = await _accountRepository.GetPermissions();
+            return users;
+        }
+
+        public async Task UpdateClient(string id, RegisterDTO registerDto)
+        {
+            var user = _mapper.Map<ApplicationUser>(registerDto);
+            var currentUser = await _applicationUserRepository.EditMethod(id);
+            currentUser.ClientId = user.ClientId;
+            currentUser.Email = user.Email;
+            currentUser.Permission = user.Permission;
+            currentUser.UserName = user.UserName;
+            currentUser.Description = user.Description;
+            await _applicationUserRepository.UpdateUser(currentUser);
         }
     }
 }

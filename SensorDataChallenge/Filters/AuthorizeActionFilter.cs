@@ -24,7 +24,7 @@ namespace SensorDataChallenge.Filters
 
             if (!isAuthorized)
             {
-                context.Result = new RedirectToActionResult("Index", "Home", null);
+                context.Result = new ForbidResult();
             }
         }
 

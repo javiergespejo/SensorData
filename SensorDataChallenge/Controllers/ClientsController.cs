@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SensorDataChallenge.DTOs;
+using SensorDataChallenge.Enums;
+using SensorDataChallenge.Filters;
 using SensorDataChallenge.Interfaces;
 using System.Threading.Tasks;
 using static SensorDataChallenge.Helper;
@@ -17,6 +19,7 @@ namespace SensorDataChallenge.Controllers
         }
 
         // GET: Clients
+        [Authorize(PermissionEnum.ViewClients)]
         public async Task<IActionResult> Index()
         {
             var clientsDto = await _clientService.GetAllClients();
@@ -24,6 +27,7 @@ namespace SensorDataChallenge.Controllers
         }
 
         // GET: Clients/Details/5
+        [Authorize(PermissionEnum.ViewClients)]
         public async Task<IActionResult> Details(int id)
         {
             var client = await _clientService.GetClientById(id);
@@ -36,12 +40,14 @@ namespace SensorDataChallenge.Controllers
         }
 
         // GET: Clients/Create
+        [Authorize(PermissionEnum.CreateClient)]
         public IActionResult Create()
         {
             return View(new ClientDTO());
         }
 
         // POST: Clients/Create
+        [Authorize(PermissionEnum.CreateClient)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClientDTO clientDto)
@@ -63,13 +69,14 @@ namespace SensorDataChallenge.Controllers
                 {
                     return BadRequest(ex.Message);
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _clientService.GetAllClients()) });
+                return Json(new { isValid = true });
             }
-            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", clientDto) });
+            return Json(new { isValid = false });
 
         }
 
         // GET: Clients/Edit/5
+        [Authorize(PermissionEnum.UpdateClient)]
         [NoDirectAccess]
         public async Task<IActionResult> Edit(int id)
         {
@@ -79,6 +86,7 @@ namespace SensorDataChallenge.Controllers
         }
 
         // POST: Clients/5
+        [Authorize(PermissionEnum.UpdateClient)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ClientDTO clientDto)
@@ -108,6 +116,7 @@ namespace SensorDataChallenge.Controllers
         }
 
         // POST: ApplicationUsers/Delete/5
+        [Authorize(PermissionEnum.DeleteClient)]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

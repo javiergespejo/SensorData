@@ -24,10 +24,20 @@ namespace SensorDataChallenge.Repositories
             return user;
         }
 
-        public override void Update(ApplicationUser user)
-        {            
-            _context.Entry(user).Property(u => u.Name).IsModified = true;
-            _context.Entry(user).Property(u => u.Description).IsModified = true;
+        public async Task<ApplicationUser> EditMethod(string id)
+        {
+            var currentUser = await _entities.Include(x => x.Permission).FirstOrDefaultAsync(x => x.Id == id);
+            return currentUser;
+        }
+
+        public async Task UpdateUser(ApplicationUser currentUser)
+        {
+            _context.Entry(currentUser).Property(x => x.UserName).IsModified = true;
+            _context.Entry(currentUser).Property(x => x.Description).IsModified = true;
+            //_context.Entry(currentUser).Property(x => x.Permission.).IsModified = true;
+            _context.Entry(currentUser).Property(x => x.Email).IsModified = true;
+            _context.Entry(currentUser).Property(x => x.ClientId).IsModified = true;
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -5,9 +5,8 @@
 }
 
 <h1 class="text-center">Users</h1>
-
 <p>
-    <a onclick="showInPopup('@Url.Action("Create","ApplicationUsers", null, Context.Request.Scheme)','New User')" class="btn btn-success text-white font-weight-bold">New User</a>
+    <a asp-controller="Account" asp-action="Register" class="btn btn-success text-white font-weight-bold">New Client</a>
 </p>
 <table class="table text-center">
     <thead>

@@ -1,18 +1,12 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SensorDataChallenge.DTOs;
+using SensorDataChallenge.Enums;
+using SensorDataChallenge.Filters;
 using SensorDataChallenge.Interfaces;
 using SensorDataChallenge.Models;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using SensorDataChallenge.Data;
-using System.Linq;
 
 namespace SensorDataChallenge.Controllers
 {
@@ -32,7 +26,8 @@ namespace SensorDataChallenge.Controllers
         }
 
         // GET: Account/Register
-        [AllowAnonymous]
+        //[Authorize(PermissionEnum.CreateClient)]
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         public async Task<IActionResult> Register()
         {
             var permissions = await _accountRepository.GetPermissions();
@@ -41,9 +36,10 @@ namespace SensorDataChallenge.Controllers
         }
 
         // POST: Account/Register
+        //[Authorize(PermissionEnum.CreateClient)]
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterDTO model)
         {
             model.Permission = await _accountRepository.Permissions(model);
@@ -90,14 +86,14 @@ namespace SensorDataChallenge.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [AllowAnonymous]
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        [AllowAnonymous]
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginDTO model)
@@ -119,7 +115,7 @@ namespace SensorDataChallenge.Controllers
         }
 
         [AcceptVerbs("Get", "Post")]
-        [AllowAnonymous]
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         public async Task<IActionResult> IsUserNameInUse(string username)
         {
             var user = await userManager.FindByEmailAsync(username);

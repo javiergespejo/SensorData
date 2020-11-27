@@ -11,6 +11,7 @@ namespace SensorDataChallenge.DTOs
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public int PermissionsId { get; set; }
         public List<Permission> Permission { get; set; }
     }
 }

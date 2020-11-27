@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SensorDataChallenge.Data;
 using SensorDataChallenge.DTOs;
+using SensorDataChallenge.Enums;
+using SensorDataChallenge.Filters;
 using SensorDataChallenge.Interfaces;
 using System;
 using System.Threading.Tasks;
@@ -10,12 +14,15 @@ namespace SensorDataChallenge.Controllers
     public class ApplicationUsersController : Controller
     {
         private readonly IApplicationUserService _applicationUserService;
-        public ApplicationUsersController(IApplicationUserService applicationUserService)
+        private readonly SensorDataDbContext _context;
+        public ApplicationUsersController(IApplicationUserService applicationUserService, SensorDataDbContext context)
         {
             _applicationUserService = applicationUserService;
+            _context = context;
         }
 
         // GET: ApplicationUsers
+        [Authorize(PermissionEnum.ViewUsers)]
         public async Task<IActionResult> Index()
         {
             var usersDto = await _applicationUserService.GetAllUsers();
@@ -23,6 +30,7 @@ namespace SensorDataChallenge.Controllers
         }
 
         // GET: ApplicationUsers/Details/5
+        [Authorize(PermissionEnum.ViewUsers)]
         public async Task<IActionResult> Details(string id)
         {
             var user = await _applicationUserService.GetUserById(id);
@@ -34,76 +42,47 @@ namespace SensorDataChallenge.Controllers
             return View(userDto);
         }
 
-        // GET: ApplicationUsers/Create
-        public IActionResult Create()
-        {
-            return View(new ApplicationUserDTO());
-        }
-
-        // POST: ApplicationUsers/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ApplicationUserDTO userDto)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = _applicationUserService.EntityDTOToEntity(userDto);
-                var userExist = await _applicationUserService.UserExist(user);
-                if (userExist)
-                {
-                    return Conflict($"El usuario {userDto.UserName} ya existe.");
-                }
-
-                try
-                {
-                    await _applicationUserService.AddAndSave(user);
-                }
-                catch (DbUpdateException ex)
-                {
-                    return BadRequest(ex);
-                }                                                                          /*CAMBIAR EL REDIRECT*/
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Index", _applicationUserService.GetAllUsers()) });
-            }
-            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", userDto) });
-        }
-
         // GET: ApplicationUsers/Edit/5
+        [Authorize(PermissionEnum.UpdateUser)]
         public async Task<IActionResult> Edit(string id)
         {
             var user = await _applicationUserService.GetUserById(id);
-            var userDto = _applicationUserService.EntityToEntityEditDTO(user);
-            return View(userDto);
+            var registerDto = _applicationUserService.EntityToRegisterDTO(user);
+            var permissions = await _applicationUserService.GetPermissions();
+            ViewBag.Permissions = new MultiSelectList(permissions, "Id", "Description");
+
+            return View(registerDto);
         }
 
         // POST: ApplicationUsers/Edit/5
+        [Authorize(PermissionEnum.UpdateUser)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, ApplicationUserEditDTO userDto)
+        public async Task<IActionResult> Edit(string id, RegisterDTO registerDto)
         {
-            if (id != userDto.Id)
+            registerDto.Permission = await _applicationUserService.Permissions(registerDto);
+
+            if (id != registerDto.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    var currentUser = await _applicationUserService.GetUserById(id);
-                    var user = _applicationUserService.EntityEditDTOToEntity(userDto);
-                    await _applicationUserService.UpdateAndSave(user);
-                }
-                catch (DbUpdateConcurrencyException ex)
-                {
-
-                    return BadRequest(ex.Message);
-                }                                                                          /*CAMBIAR EL REDIRECT*/
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Index", _applicationUserService.GetAllUsers()) });
+                await _applicationUserService.UpdateClient(id, registerDto);
             }
-            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", userDto) });
+            catch (DbUpdateConcurrencyException ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Index", _applicationUserService.GetAllUsers()) });
+
+            //return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", registerDto) });
         }
 
         // POST: ApplicationUsers/Delete/5
+        [Authorize(PermissionEnum.DeleteUser)]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -116,7 +95,7 @@ namespace SensorDataChallenge.Controllers
 
             try
             {
-                await _applicationUserService.DeleteAndSave(id);              /*CAMBIAR EL REDIRECT*/
+                await _applicationUserService.DeleteAndSave(id);
                 return Json(new { html = Helper.RenderRazorViewToString(this, "Index", _applicationUserService.GetAllUsers()) });
             }
             catch (Exception ex)
