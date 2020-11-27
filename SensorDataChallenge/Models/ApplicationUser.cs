@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SensorDataChallenge.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SensorDataChallenge.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SensorDataChallenge.DTOs
 {
@@ -20,12 +22,6 @@ namespace SensorDataChallenge.DTOs
         [Display(Name = "Postal Code")]
         [DataType(DataType.PostalCode)]
         public int PostalCode { get; set; }
-        public enum Zone
-        {
-            Norte,
-            Centro,
-            Sur
-        }
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
         public string Fax { get; set; }
@@ -33,18 +29,9 @@ namespace SensorDataChallenge.DTOs
         [EmailAddress]
         public string Email { get; set; }
         public string Web { get; set; }
-        public enum UruguayTransit
-        {
-            Si,
-            No,
-            Opcional
-        }
-        public enum UruguayLooseCargoTransit
-        {
-            Si,
-            No,
-            Opcional
-        }
+        public List<UruguayTransit> UruguayTransit { get; set; }
+        public List<UruguayLooseCargoTransit> UruguayLooseCargoTransit { get; set; }
+        public List<Zone> Zone { get; set; }
         public bool IsActive { get; set; }
     }
 }

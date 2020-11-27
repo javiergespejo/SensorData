@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SensorDataChallenge.Data;
 using SensorDataChallenge.DTOs;
 using SensorDataChallenge.Enums;
 using SensorDataChallenge.Filters;

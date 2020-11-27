@@ -6,7 +6,6 @@ using SensorDataChallenge.Enums;
 using SensorDataChallenge.Filters;
 using SensorDataChallenge.Interfaces;
 using SensorDataChallenge.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SensorDataChallenge.Controllers

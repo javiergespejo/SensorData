@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SensorDataChallenge.Data;
 using SensorDataChallenge.DTOs;
 using SensorDataChallenge.Interfaces;
 using SensorDataChallenge.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
