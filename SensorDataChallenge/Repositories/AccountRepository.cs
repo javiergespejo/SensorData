@@ -28,5 +28,11 @@ namespace SensorDataChallenge.Repositories
             var permissions = await _context.Permission.Where(x => model.PermissionsId.Contains(x.Id)).ToListAsync();
             return permissions;
         }
+
+        public IEnumerable<Client> GetClients()
+        {            
+            var clients = _context.Client.Where(c => c.IsActive == true).AsEnumerable();
+            return clients;
+        }
     }
 }

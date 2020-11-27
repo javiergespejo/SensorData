@@ -14,11 +14,9 @@ namespace SensorDataChallenge.Controllers
     public class ApplicationUsersController : Controller
     {
         private readonly IApplicationUserService _applicationUserService;
-        private readonly SensorDataDbContext _context;
-        public ApplicationUsersController(IApplicationUserService applicationUserService, SensorDataDbContext context)
+        public ApplicationUsersController(IApplicationUserService applicationUserService)
         {
             _applicationUserService = applicationUserService;
-            _context = context;
         }
 
         // GET: ApplicationUsers
@@ -49,7 +47,8 @@ namespace SensorDataChallenge.Controllers
             var user = await _applicationUserService.GetUserById(id);
             var registerDto = _applicationUserService.EntityToRegisterDTO(user);
             var permissions = await _applicationUserService.GetPermissions();
-            ViewBag.Permissions = new MultiSelectList(permissions, "Id", "Description");
+            ViewBag.Permissions = new MultiSelectList(permissions, "Id", "Description"); var clients = _applicationUserService.GetClients();
+            ViewData["ClientId"] = new SelectList(clients, "Id", "BusinessName");
 
             return View(registerDto);
         }

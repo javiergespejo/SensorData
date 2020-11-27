@@ -36,8 +36,8 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ClientId"></label>
-                <input asp-for="ClientId" class="form-control" />
+                <label>Client</label>
+                <select asp-for="ClientId" class="form-control" asp-items="ViewBag.ClientId"></select>
             </div>
             <div class="form-group">
                 <select multiple asp-for="PermissionsId" id="permission" asp-items="ViewBag.Permissions" placeholder="select roles" class="form-control w-50 dropdown"></select>

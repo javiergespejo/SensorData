@@ -6,6 +6,7 @@ using SensorDataChallenge.Enums;
 using SensorDataChallenge.Filters;
 using SensorDataChallenge.Interfaces;
 using SensorDataChallenge.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SensorDataChallenge.Controllers
@@ -26,13 +27,16 @@ namespace SensorDataChallenge.Controllers
         }
 
         // GET: Account/Register
-        //[Authorize(PermissionEnum.CreateClient)]
+        [Authorize(PermissionEnum.CreateClient)]
         [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         public async Task<IActionResult> Register()
         {
             var permissions = await _accountRepository.GetPermissions();
             ViewBag.Permissions = new MultiSelectList(permissions, "Id", "Description");
-            return View();
+            var clients = _accountRepository.GetClients();
+            ViewData["ClientId"] = new SelectList(clients, "Id", "BusinessName");
+
+            return View(new RegisterDTO());
         }
 
         // POST: Account/Register

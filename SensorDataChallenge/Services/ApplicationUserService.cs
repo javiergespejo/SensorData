@@ -99,5 +99,10 @@ namespace SensorDataChallenge.Services
             currentUser.Description = user.Description;
             await _applicationUserRepository.UpdateUser(currentUser);
         }
-    }
+
+        public IEnumerable<Client> GetClients()
+        {
+            return _accountRepository.GetClients();
+        }
+    } 
 }

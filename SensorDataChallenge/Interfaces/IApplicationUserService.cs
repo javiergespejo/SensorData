@@ -19,5 +19,6 @@ namespace SensorDataChallenge.Interfaces
         public Task<List<Permission>> GetPermissions();
         public Task<List<Permission>> Permissions(RegisterDTO registerDto);
         public Task UpdateClient(string id, RegisterDTO registerDto);
+        public IEnumerable<Client> GetClients();
     }
 }

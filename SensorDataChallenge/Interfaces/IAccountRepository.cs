@@ -11,5 +11,6 @@ namespace SensorDataChallenge.Interfaces
     {
         public Task<List<Permission>> GetPermissions();
         public Task<List<Permission>> Permissions(RegisterDTO model);
+        public IEnumerable<Client> GetClients();
     }
 }
