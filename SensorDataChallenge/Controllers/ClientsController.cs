@@ -69,9 +69,9 @@ namespace SensorDataChallenge.Controllers
                 {
                     return BadRequest(ex.Message);
                 }
-                return Json(new { isValid = true });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _clientService.GetAllClients()) });
             }
-            return Json(new { isValid = false });
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", clientDto) });
 
         }
 

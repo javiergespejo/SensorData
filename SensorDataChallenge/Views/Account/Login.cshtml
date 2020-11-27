@@ -38,16 +38,6 @@
                         <input asp-for="Password" class="form-control form-control-lg inverse-mode" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-
-                    <div class="form-group">
-                        <div class="checkbox checkbox-css m-b-20">
-                            <label asp-for="RememberMe">
-                                <input asp-for="RememberMe" />
-                                @Html.DisplayNameFor(m => m.RememberMe)
-                            </label>
-                        </div>
-                    </div>
-
                     <div class="login-buttons">
                         <button type="submit" class="btn btn-success btn-block btn-lg">Login</button>
                     </div>
