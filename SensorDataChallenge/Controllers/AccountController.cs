@@ -27,7 +27,6 @@ namespace SensorDataChallenge.Controllers
 
         // GET: Account/Register
         [Authorize(PermissionEnum.CreateClient)]
-        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         public async Task<IActionResult> Register()
         {
             var permissions = await _accountRepository.GetPermissions();
@@ -39,8 +38,7 @@ namespace SensorDataChallenge.Controllers
         }
 
         // POST: Account/Register
-        //[Authorize(PermissionEnum.CreateClient)]
-        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+        [Authorize(PermissionEnum.CreateClient)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterDTO model)
