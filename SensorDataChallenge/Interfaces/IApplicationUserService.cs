@@ -8,8 +8,6 @@ namespace SensorDataChallenge.Interfaces
     public interface IApplicationUserService
     {
         public Task<IEnumerable<ApplicationUserPublicViewDTO>> GetAllUsers();
-        public ApplicationUser EntityDTOToEntity(ApplicationUserDTO userDto);
-        public ApplicationUserDTO EntityToEntityDTO(ApplicationUser user);
         public ApplicationUserPublicViewDTO EntityToEntityPublicViewDTO(ApplicationUser user);
         public ApplicationUser RegisterDTOToEntity(RegisterDTO registerDto);
         public RegisterDTO EntityToRegisterDTO(ApplicationUser user);

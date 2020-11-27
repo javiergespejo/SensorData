@@ -28,18 +28,6 @@ namespace SensorDataChallenge.Services
             return usersDto;
         }
 
-        public ApplicationUser EntityDTOToEntity(ApplicationUserDTO userDto)
-        {
-            var user = _mapper.Map<ApplicationUser>(userDto);
-            return user;
-        }
-
-        public ApplicationUserDTO EntityToEntityDTO(ApplicationUser user)
-        {
-            var userDto = _mapper.Map<ApplicationUserDTO>(user);
-            return userDto;
-        }
-
         public ApplicationUserPublicViewDTO EntityToEntityPublicViewDTO(ApplicationUser user)
         {
             var userDto = _mapper.Map<ApplicationUserPublicViewDTO>(user);
