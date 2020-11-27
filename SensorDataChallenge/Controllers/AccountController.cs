@@ -46,7 +46,6 @@ namespace SensorDataChallenge.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterDTO model)
         {
-            //model.Permission = _context.Permission.Where(x => model.PermissionsId.Contains(x.Id)).ToList();
             model.Permission = await _accountRepository.Permissions(model);
 
             if (ModelState.IsValid)
