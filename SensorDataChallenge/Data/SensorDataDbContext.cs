@@ -70,6 +70,83 @@ namespace SensorDataChallenge.Data
                         Description = "ViewMap"
                     }
                 );
+            modelBuilder.Entity<Client>()
+                .HasData(
+                    new Client
+                    {
+                        Id = 1,
+                        BusinessName = "Client1 SRL",
+                        RucNum = 123456,
+                        Address = "9 de Julio 1324",
+                        Country = "Argentina",
+                        City = "Rosario",
+                        PostalCode = 2000,
+                        Phone = "3145788845",
+                        Fax = "2598741",
+                        Email = "client1srl@client1srl.com",
+                        Web = "www.client1srl.com",
+                        IsActive = true
+                    },
+                    new Client
+                    {
+                        Id = 2,
+                        BusinessName = "Client2 SRL",
+                        RucNum = 123456,
+                        Address = "9 de Julio 1324",
+                        Country = "Argentina",
+                        City = "Rosario",
+                        PostalCode = 2000,
+                        Phone = "3145788845",
+                        Fax = "2598741",
+                        Email = "client2srl@client2srl.com",
+                        Web = "www.client2srl.com",
+                        IsActive = true
+                    },
+                    new Client
+                    {
+                        Id = 3,
+                        BusinessName = "Client3 SRL",
+                        RucNum = 123456,
+                        Address = "9 de Julio 1324",
+                        Country = "Argentina",
+                        City = "Rosario",
+                        PostalCode = 2000,
+                        Phone = "3145788845",
+                        Fax = "2598741",
+                        Email = "client3srl@client3srl.com",
+                        Web = "www.client3srl.com",
+                        IsActive = true
+                    },
+                    new Client
+                    {
+                        Id = 4,
+                        BusinessName = "Client4 SRL",
+                        RucNum = 123456,
+                        Address = "9 de Julio 1324",
+                        Country = "Argentina",
+                        City = "Rosario",
+                        PostalCode = 2000,
+                        Phone = "3145788845",
+                        Fax = "2598741",
+                        Email = "client4srl@client4srl.com",
+                        Web = "www.client4srl.com",
+                        IsActive = true
+                    },
+                    new Client
+                    {
+                        Id = 5,
+                        BusinessName = "Client5 SRL",
+                        RucNum = 123456,
+                        Address = "9 de Julio 1324",
+                        Country = "Argentina",
+                        City = "Rosario",
+                        PostalCode = 2000,
+                        Phone = "3145788845",
+                        Fax = "2598741",
+                        Email = "client5srl@client5srl.com",
+                        Web = "www.client5srl.com",
+                        IsActive = true
+                    });
         }
     }
 }
